@@ -21,10 +21,10 @@ public class Life : MonoBehaviour {
 	#endregion
 
 	// Vitals
-	string name, surname, gender, snationality, sexuality, mother_name, father_name;
+	string firstname, surname, gender, snationality, sexuality, mother_name, father_name;
 	NationalityDetails nationalityDetails;
 
-	public string Name			{	get { return name; }			set { name = value; } 	}
+	public string FirstName		{	get { return firstname; }		set { firstname = value; } 	}
 	public string Surname		{	get { return surname; }			set { surname = value; } 	}
 	public string Gender		{	get { return gender; }			set { gender = value; } 	}
 	public string sNationality	{	get { return snationality; }	set { snationality = value; } 	}
@@ -67,6 +67,9 @@ public class Life : MonoBehaviour {
 
 	void SetNationality() {
 
+		// Picking a random dictionary keypair by putting the Keys into a list, getting a random value from there
+		//		and putting the return value into the original dictionary.
+
 		List<string> keyList = new List<string> (Nationality.Nationalities.Keys);
 
 		sNationality = keyList[Random.Range(0, keyList.Count)];
@@ -74,8 +77,10 @@ public class Life : MonoBehaviour {
 
 		if (nationalityDetails != null) {
 
-			Debug.Log (string.Format ("Nationality picked as: {0}, you're from {1}, the code is: {2}",
-				nationalityDetails.Nationality, nationalityDetails.CountryName, sNationality));
+			Debug.Log (string.Format ("Nationality picked as: {0}, you're from {1}, the code is: {2}. Your currency is {3}, and the format is: {4}4,000{5}",
+				nationalityDetails.Nationality, nationalityDetails.CountryName,
+				sNationality, nationalityDetails.CurrencyName,
+				nationalityDetails.CurrencyStringPrefix, nationalityDetails.CurrencyStringSuffix));
 
 		}
 
@@ -84,6 +89,14 @@ public class Life : MonoBehaviour {
 	void ResetSkills() {
 
 		SetNationality ();
+
+		// Replacing values with default just been born values;
+		Happiness = 100f;
+		Appearance = 50f;
+		Fitness = 5f;
+		Intellect = 10f;
+
+		Guitar = Piano = Violin = Art = Talking = Building = 0f;
 
 	}
 
