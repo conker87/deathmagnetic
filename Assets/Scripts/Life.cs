@@ -4,68 +4,54 @@ using UnityEngine;
 
 public class Life : MonoBehaviour {
 
-	#region Singleton
-	public static Life Current = null;
-
-	void Awake() {
-
-		if (Current == null) {
-			Current = this;
-		} else if (Current != this) {
-			Destroy (gameObject);    
-		}
-
-		DontDestroyOnLoad(gameObject);
-
-	}
-	#endregion
-
 	// Vitals
-	string firstname, surname, gender, snationality, sexuality, mother_name, father_name;
+	string firstname, surname, snationality;
+	Parent mother, father;
+	int age;
+	Gender gender;
+	Sexuality sexuality;
 	NationalityDetails nationalityDetails;
 
-	public string FirstName		{	get { return firstname; }		set { firstname = value; } 	}
-	public string Surname		{	get { return surname; }			set { surname = value; } 	}
-	public string Gender		{	get { return gender; }			set { gender = value; } 	}
-	public string sNationality	{	get { return snationality; }	set { snationality = value; } 	}
-	public string Sexuality		{	get { return sexuality; }		set { sexuality = value; } 	}
-	public string Mother_Name	{	get { return mother_name; }		set { mother_name = value; } 	}
-	public string Father_Name	{	get { return father_name; }		set { father_name = value; } 	}
+	public string FirstName		{	get { return firstname; 	}	set { firstname = value; 	} 	}
+	public string Surname		{	get { return surname; 		}	set { surname = value; 		} 	}
+	public Gender Gender		{	get { return gender; 		}	set { gender = value; 		}	}
+	public Parent Mother		{	get { return mother; 		}	set { mother = value; 		} 	}
+	public Parent Father		{	get { return father; 		}	set { father = value; 		} 	}
+	public string sNationality	{	get { return snationality; 	}	set { snationality = value; } 	}
+	public Sexuality Sexuality	{	get { return sexuality;		}	set { sexuality = value; 	} 	}
+	public int Age				{	get { return age;			}	set { age = value; 			} 	} // THIS IS IN MONTHS!
+
+	public NationalityDetails NationalityDetails	{	get { return nationalityDetails; }	set { nationalityDetails = value; 			} 	} !
 
 	// Basic Stats
 	[Range(0, 100)]
 	float happiness, appearance, fitness, intellect;
 
-	public float Happiness	{	get { return happiness; }	set { happiness = value; } 	}
-	public float Appearance	{	get { return appearance; }	set { appearance = value; }	}
-	public float Fitness 	{	get { return fitness; }		set { fitness = value; }	}
-	public float Intellect 	{	get { return intellect; }	set { intellect = value; }	}
+	public float Happiness	{	get { return happiness;		}	set { happiness = value; 	} 	}
+	public float Appearance	{	get { return appearance;	}	set { appearance = value; 	}	}
+	public float Fitness 	{	get { return fitness;		}	set { fitness = value; 		}	}
+	public float Intellect 	{	get { return intellect;		}	set { intellect = value; 	}	}
 
-	// Learnable skills
-	[Range(0, 100)]
-	float guitar, piano, violin, art, talking, building;
-		// Add more?
+	protected virtual void SetVitals() { 
 
-	public float Guitar 	{	get { return guitar; }	set { guitar = value; }		}
-	public float Piano 		{	get { return piano; }	set { piano = value; }		}
-	public float Violin 	{	get { return violin; }	set { violin = value; }		}
-	public float Art 		{	get { return art; }		set { art = value; }		}
-	public float Talking 	{	get { return talking; }	set { talking = value; }	}
-	public float Building 	{	get { return building; }set { building = value; }	}
+		FirstName = "Testie";					// TODO: Randomly picknames depending on Nationality.
+		Surname = "McTesterson";
 
-	public void Birth() {
-
-		ResetSkills ();
+		Gender = (Random.value > 0.5f) ? Gender.MALE : Gender.FEMALE;
 
 	}
 
-	public void Suicide() {
+	protected virtual void SetBasicStats() {
 
-		// Destroy and regen all data related to the current Life.
+		// Replacing values with default just been born values;
+		Happiness = 100f;
+		Appearance = 50f;
+		Fitness = 5f;
+		Intellect = 10f;
 
 	}
 
-	void SetNationality() {
+	protected void SetNationality() {
 
 		// Picking a random dictionary keypair by putting the Keys into a list, getting a random value from there
 		//		and putting the return value into the original dictionary.
@@ -86,33 +72,7 @@ public class Life : MonoBehaviour {
 
 	}
 
-	void ResetSkills() {
-
-		SetNationality ();
-
-		// Replacing values with default just been born values;
-		Happiness = 100f;
-		Appearance = 50f;
-		Fitness = 5f;
-		Intellect = 10f;
-
-		Guitar = Piano = Violin = Art = Talking = Building = 0f;
-
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 }
 
-public enum Sexuality { HETEROSEXUAL, BISEXUAL, HOMOSEXUAL }
-// public enum Nationality { USA }
+public enum Sexuality	{ HETEROSEXUAL, BISEXUAL, HOMOSEXUAL }
+public enum Gender		{ MALE, FEMALE }
