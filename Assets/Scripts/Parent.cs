@@ -8,12 +8,13 @@ public class Parent : Life {
 
 	public virtual void Create() {
 
+		#region Sexuality
 		if (ParentType == ParentType.MOTHER) {
 
 			// We first decide the sexuality of the first parent (which is always the mother, easier that way)
 			//	The chance to Heterosexual is 90%, with being Bi or Homosexual given both 5% chances.
 			//	I could look up actual populations of Bisexual and Homosexual people in the world to get an accurate chance, but I'm lazy.
-			Sexuality = (Random.value > (0.5f /* 1f - Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER) */) ? Sexuality.HETEROSEXUAL :
+			Sexuality = (Random.value > (1f - Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER) ? Sexuality.HETEROSEXUAL :
 								((Random.value > 0.5f) ? Sexuality.BISEXUAL : Sexuality.HOMOSEXUAL));
 
 			// "Default"
@@ -42,6 +43,7 @@ public class Parent : Life {
 
 				Gender = (Zeus.Current.Mother.Gender == Gender.MALE) ? Gender.FEMALE : Gender.MALE;
 				Sexuality = (Random.value > (1f - Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER)) ? Sexuality.HETEROSEXUAL : Sexuality.BISEXUAL;
+
 			}
 
 			if (Zeus.Current.Mother.Sexuality == Sexuality.BISEXUAL) {
@@ -59,6 +61,10 @@ public class Parent : Life {
 				if (Zeus.Current.Mother.Gender == Gender) {
 
 					Sexuality = (Random.value > 0.5f) ? Sexuality.BISEXUAL : Sexuality.HOMOSEXUAL;
+
+				} else {
+
+					Sexuality = (Random.value > 0.05f) ? Sexuality.HETEROSEXUAL : Sexuality.BISEXUAL;
 
 				}
 
@@ -81,11 +87,33 @@ public class Parent : Life {
 								);
 
 		}
+		#endregion
 
-		Happiness = Random.Range(0f, 100f);
-		Appearance = Random.Range(0f, 100f);
-		Fitness = Random.Range(0f, 100f);
-		Intellect = Random.Range(0f, 100f);
+		#region Basic Stats
+		Happiness = Random.Range(0, 100);
+		Appearance = Random.Range(0, 100);
+		Fitness = Random.Range(0, 100);
+		Intellect = Random.Range(0, 100);
+		#endregion
+
+		if (ParentType == ParentType.MOTHER) {
+
+			Nationality = Zeus.SetNationality ();
+
+		}
+
+		if (ParentType == ParentType.FATHER) {
+
+			Nationality = (Random.value > 1f - Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER) ? Zeus.Current.Mother.Nationality : Zeus.SetNationality ();
+
+		}
+
+	}
+
+	public override void ProcessAging () {
+
+		// This needs to go at the end of the aging processes, with the above stuff happening.
+		base.ProcessAging ();
 
 	}
 

@@ -21,6 +21,7 @@ public class Zeus : MonoBehaviour {
 	#endregion
 
 	public Player Player;
+	public Spouse Spouse;
 	public Parent Mother, Father;
 
 	public void CreateNewLife() {
@@ -55,35 +56,60 @@ public class Zeus : MonoBehaviour {
 		Father.Create ();
 
 		Player = gameObject.AddComponent<Player> ();
-		Player.AmAdopted = (Mother.Gender == Father.Gender);
 		Player.Create ();
 
 	}
 
-	NationalityDetails SetNationality() {
+	public void AgeMonth(int monthsToAge) {
+
+		if (Player == null || Mother == null || Father == null) {
+
+			return;
+
+		}
+
+		int i = 0;
+
+		while (monthsToAge > i) {
+
+			Player.ProcessAging ();
+			if (Spouse != null) Spouse.ProcessAging ();
+			Mother.ProcessAging ();
+			Father.ProcessAging ();
+
+			i++;
+		}
+
+	}
+
+	public void LearningGuitarToggle() {
+
+		if (!Player.LearningGuitar) {
+
+			Player.LearningGuitar = true;
+			Player.startedGuitar.Add (Player.Age);
+
+		} else {
+
+			Player.LearningGuitar = false;
+
+		}
+
+	}
+
+	public static NationalityDetails SetNationality() {
 
 		// Picking a random dictionary keypair by putting the Keys into a list, getting a random value from there
 		//		and putting the return value into the original dictionary.
-
 		List<string> keyList = new List<string> (Nationality.Nationalities.Keys);
 
 		string code = keyList[Random.Range(0, keyList.Count)];
 		NationalityDetails random = Nationality.Nationalities [code];
 
-		if (random != null) {
-
-			Debug.Log (string.Format ("Nationality picked as: {0}, you're from {1}, the code is: {2}. Your currency is {3}, and the format is: {4}4,000{5}",
-				random.Nationality, random.CountryName,
-				random.CountryCode, random.CurrencyName,
-				random.CurrencyStringPrefix, random.CurrencyStringSuffix));
-
-		}
-
 		return random;
 
 	}
-
-	
+		
 	// Update is called once per frame
 	void Update () {
 		

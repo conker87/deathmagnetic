@@ -29,10 +29,10 @@ public class Spouse : Life {
 
 		// TODO: Think about maybe setting appearance from fitness or the other way around?
 
-		Happiness = Random.Range (0, 100f);
-		Appearance = Random.Range (0, 100f);
-		Fitness = Random.Range (0, 100f);
-		Intellect = Random.Range (0, 100f);
+		Happiness = Random.Range (0, 100);
+		Appearance = Random.Range (0, 100);
+		Fitness = Random.Range (0, 100);
+		Intellect = Random.Range (0, 100);
 
 	}
 

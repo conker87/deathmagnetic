@@ -11,4 +11,7 @@ public class Constants {
 
 	public static int LIFE_ABSOLUTE_MAX_AGE_IN_MONTHS = 1500;
 
+	public static float SCHOOL_BACKGROUND_INTELLECT_GAIN_PER_MONTH = 0.5f; // [PH]
+	public static float BASE_SKILL_INCREASE_PER_MONTH = 0.1f;
+
 }

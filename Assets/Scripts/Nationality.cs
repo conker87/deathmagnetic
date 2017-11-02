@@ -10,7 +10,7 @@ public class Nationality {
 		// TODO: Finish this list, check what nationality people are, find and complete currency names & symbols, exchange rates and general cost of living.
 
 		{ "ENG", new NationalityDetails("ENG", "England", "English", "British Pound", "£", "", 1f) },
-		{ "AFG", new NationalityDetails("AFG", "Afghanistan", "Afghanistanian?", "Afghan Afghani", "", char.ConvertFromUtf32(0x060B).ToString(), 90.75f) },   // ؋
+		{ "AFG", new NationalityDetails("AFG", "Afghanistan", "Afghan", "Afghan Afghani", "", char.ConvertFromUtf32(0x060B).ToString(), 90.75f) },   // ؋
 		{ "ALB", new NationalityDetails("ALB", "Albania", "Albanian", "Albanian Lek", "Lek", "", 152.65f) },
 		{ "DZA", new NationalityDetails("DZA", "Algeria", "Algerian", "Algerian Dinar", "", "", 153.68f) },
 		{ "ASM", new NationalityDetails("ASM", "American Samoa", "Samoan", "US Dollar", "$", "", 1.33f) },
@@ -20,6 +20,7 @@ public class Nationality {
 
 }
 
+[System.Serializable]
 public class NationalityDetails {
 
 	public NationalityDetails(string countryCode, string countryName, string nationality, string currencyName, string currencyStringPrefix, string currencyStringSuffix, float currencyMultiplier) {
