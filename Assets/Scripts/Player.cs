@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class Player : Life {
 
-	#region Singleton
-	public static Life Current = null;
+	// Player only vitals
+	[SerializeField]
+	Parent mother, father;
 
-	void Awake() {
+	public Parent Mother			{	get { return mother; 			}	set { mother = value; 			} 	}
+	public Parent Father			{	get { return father; 			}	set { father = value; 			} 	}
 
-		if (Current == null) {
-			Current = this;
-		} else if (Current != this) {
-			Destroy (gameObject);    
-		}
+	[SerializeField]
+	bool amAdopted = false;
 
-		DontDestroyOnLoad(gameObject);
-
-	}
-	#endregion
+	public bool AmAdopted			{	get { return amAdopted; 		}	set { amAdopted = value; 		} 	}
 
 	// Learnable skills
 	[Range(0, 100)]
@@ -37,9 +33,13 @@ public class Player : Life {
 
 	public Spouse Spouse	{	get { return spouse; 	}	set { spouse = value; }	}
 
-	void ResetSkills() {
+	public void Create() {
 
-		SetNationality ();
+
+
+	}
+
+	void ResetSkills() {
 
 		Guitar = Piano = Violin = Art = Talking = Building = 0f;
 
@@ -47,7 +47,7 @@ public class Player : Life {
 
 	public void Birth() {
 
-		SetBasicStats ();
+		SetBirthStats ();
 
 		ResetSkills ();
 
@@ -55,12 +55,14 @@ public class Player : Life {
 
 	public void Suicide() {
 
-		// Destroy and regen all data related to the current Life.
+		Zeus.Current.CreateNewLife ();
 
 	}
 
 	// Use this for initialization
 	void Start () {
+
+		Debug.Log ("Life::Player -- Start()");
 		
 	}
 	

@@ -185,7 +185,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1681129762}
-        m_MethodName: Birth
+        m_MethodName: CreateNewLife
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -715,6 +715,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1681129761}
   - component: {fileID: 1681129762}
+  - component: {fileID: 1681129765}
+  - component: {fileID: 1681129764}
+  - component: {fileID: 1681129763}
   m_Layer: 0
   m_Name: That Was Just Your Life
   m_TagString: Untagged
@@ -743,9 +746,70 @@ MonoBehaviour:
   m_GameObject: {fileID: 1681129760}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc0e3577174eae94caf115c603900e3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 1681129763}
+  Mother: {fileID: 1681129765}
+  Father: {fileID: 1681129764}
+--- !u!114 &1681129763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1681129760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3094fd8e5978892468b944b35efde406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstname: 
+  surname: 
+  nationalityCode: 
+  age: 0
+  ageInYears: 0
+  gender: 0
+  sexuality: 0
+  mother: {fileID: 0}
+  father: {fileID: 0}
+--- !u!114 &1681129764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1681129760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0750f5adc29deb34facdd0204b1cbbeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstname: Father
+  surname: 
+  nationalityCode: 
+  age: 0
+  ageInYears: 0
+  gender: 0
+  sexuality: 0
+  ParentType: 0
+--- !u!114 &1681129765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1681129760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0750f5adc29deb34facdd0204b1cbbeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstname: Mother
+  surname: 
+  nationalityCode: 
+  age: 0
+  ageInYears: 0
+  gender: 0
+  sexuality: 0
+  ParentType: 0
 --- !u!1 &1737791492
 GameObject:
   m_ObjectHideFlags: 0

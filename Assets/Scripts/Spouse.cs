@@ -4,30 +4,28 @@ using UnityEngine;
 
 public class Spouse : Life {
 
-	protected override void SetVitals () {
+	protected void SetVitals () {
 
-		base.SetVitals ();
-
-		switch (Player.Current.Sexuality) {
+		switch (Zeus.Current.Player.Sexuality) {
 
 		case Sexuality.BISEXUAL:
 			Gender = (Random.value > 0.5f) ? Gender.MALE : Gender.FEMALE;
 			break;
 
 		case Sexuality.HOMOSEXUAL:
-			Gender = (Player.Current.Gender == Gender.MALE) ? Gender.MALE : Gender.FEMALE;
+			Gender = (Zeus.Current.Player.Gender == Gender.MALE) ? Gender.MALE : Gender.FEMALE;
 			break;
 
 		default:
 		case Sexuality.HETEROSEXUAL:
-			Gender = (Player.Current.Gender == Gender.MALE) ? Gender.FEMALE : Gender.MALE;
+			Gender = (Zeus.Current.Player.Gender == Gender.MALE) ? Gender.FEMALE : Gender.MALE;
 			break;
 
 		}
 
 	}
 
-	protected override void SetBasicStats () {
+	protected void SetBasicStats () {
 
 		// TODO: Think about maybe setting appearance from fitness or the other way around?
 

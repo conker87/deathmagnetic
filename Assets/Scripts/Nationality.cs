@@ -9,12 +9,12 @@ public class Nationality {
 
 		// TODO: Finish this list, check what nationality people are, find and complete currency names & symbols, exchange rates and general cost of living.
 
-		{ "ENG", new NationalityDetails("England", "English", "British Pound", "£", "", 1f) },
-		{ "AFG", new NationalityDetails("Afghanistan", "Afghanistanian?", "Afghan Afghani", "", char.ConvertFromUtf32(0x060B).ToString(), 90.75f) },   // ؋
-		{ "ALB", new NationalityDetails("Albania", "Albanian", "Albanian Lek", "Lek", "", 152.65f) },
-		{ "DZA", new NationalityDetails("Algeria", "Algerian", "Algerian Dinar", "", "", 153.68f) },
-		{ "ASM", new NationalityDetails("American Samoa", "Samoan", "US Dollar", "$", "", 1.33f) },
-		{ "INR", new NationalityDetails("India", "Indian", "Indian Rupee", "₹", "", 85.82f) }
+		{ "ENG", new NationalityDetails("ENG", "England", "English", "British Pound", "£", "", 1f) },
+		{ "AFG", new NationalityDetails("AFG", "Afghanistan", "Afghanistanian?", "Afghan Afghani", "", char.ConvertFromUtf32(0x060B).ToString(), 90.75f) },   // ؋
+		{ "ALB", new NationalityDetails("ALB", "Albania", "Albanian", "Albanian Lek", "Lek", "", 152.65f) },
+		{ "DZA", new NationalityDetails("DZA", "Algeria", "Algerian", "Algerian Dinar", "", "", 153.68f) },
+		{ "ASM", new NationalityDetails("ASM", "American Samoa", "Samoan", "US Dollar", "$", "", 1.33f) },
+		{ "INR", new NationalityDetails("INR", "India", "Indian", "Indian Rupee", "₹", "", 85.82f) }
 
 	};
 
@@ -22,7 +22,7 @@ public class Nationality {
 
 public class NationalityDetails {
 
-	public NationalityDetails(string countryName, string nationality, string currencyName, string currencyStringPrefix, string currencyStringSuffix, float currencyMultiplier) {
+	public NationalityDetails(string countryCode, string countryName, string nationality, string currencyName, string currencyStringPrefix, string currencyStringSuffix, float currencyMultiplier) {
 
 		CountryName = countryName;
 		Nationality = nationality;
@@ -34,8 +34,9 @@ public class NationalityDetails {
 
 	}
 
-	public NationalityDetails(string countryName, string nationality, string currencyName,  string currencyStringPrefix, string currencyStringSuffix,  float currencyMultiplier, float costOfLivingMultiplier) {
+	public NationalityDetails(string countryCode, string countryName, string nationality, string currencyName,  string currencyStringPrefix, string currencyStringSuffix,  float currencyMultiplier, float costOfLivingMultiplier) {
 
+		CountryCode = countryCode;
 		CountryName = countryName;
 		Nationality = nationality;
 		CurrencyName = currencyName;
@@ -46,7 +47,7 @@ public class NationalityDetails {
 
 	}
 
-	public string CountryName, Nationality, CurrencyName, CurrencyStringPrefix, CurrencyStringSuffix;
+	public string CountryCode, CountryName, Nationality, CurrencyName, CurrencyStringPrefix, CurrencyStringSuffix;
 	public float CurrencyMultiplier, CostOfLivingMultiplier;
 
 }
