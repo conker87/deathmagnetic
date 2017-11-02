@@ -69,6 +69,12 @@ public class Life : MonoBehaviour {
 
 	}
 
+	protected virtual void ProcessDiseases() {
+
+
+
+	}
+
 }
 
 public enum Sexuality	{ NULL, HETEROSEXUAL, BISEXUAL, HOMOSEXUAL }

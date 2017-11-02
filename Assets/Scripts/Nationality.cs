@@ -23,6 +23,9 @@ public class Nationality {
 [System.Serializable]
 public class NationalityDetails {
 
+	public string CountryCode, CountryName, Nationality, CurrencyName, CurrencyStringPrefix, CurrencyStringSuffix;
+	public float CurrencyMultiplier, CostOfLivingMultiplier;
+
 	public NationalityDetails(string countryCode, string countryName, string nationality, string currencyName, string currencyStringPrefix, string currencyStringSuffix, float currencyMultiplier) {
 
 		CountryName = countryName;
@@ -47,8 +50,5 @@ public class NationalityDetails {
 		CostOfLivingMultiplier = costOfLivingMultiplier;
 
 	}
-
-	public string CountryCode, CountryName, Nationality, CurrencyName, CurrencyStringPrefix, CurrencyStringSuffix;
-	public float CurrencyMultiplier, CostOfLivingMultiplier;
 
 }

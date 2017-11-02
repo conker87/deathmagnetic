@@ -112,7 +112,6 @@ public class Parent : Life {
 
 	public override void ProcessAging () {
 
-		// This needs to go at the end of the aging processes, with the above stuff happening.
 		base.ProcessAging ();
 
 	}

@@ -16,11 +16,18 @@ public class Player : Life {
 
 	public bool IsAdopted			{	get { return isAdopted; 		}	set { isAdopted = value; 		} 	}
 
+	// Schooling
 	[SerializeField]
 	bool atSchool, atUniversity;
 
 	public bool AtSchool			{	get { return atSchool; 			}	set { atSchool = value; 		} 	}
 	public bool AtUniversity		{	get { return atUniversity; 		}	set { atUniversity = value; 	} 	}
+
+	// Health
+	[SerializeField]
+	List<VaccinationDetails> vaccines = new List<VaccinationDetails>();
+
+	public List<VaccinationDetails> Vaccines 		{	get { return vaccines; 	}	set { vaccines = value; 	}	}
 
 	// Current Acitivies
 	[SerializeField]
@@ -80,6 +87,8 @@ public class Player : Life {
 	}
 
 	public override void ProcessAging () {
+		
+		base.ProcessAging ();
 
 		if (AtSchool) {
 
@@ -88,20 +97,30 @@ public class Player : Life {
 
 		}
 
+		ProcessGuitarLearning ();
+
+		ProcessVaccines ();
+		ProcessDiseases ();
+
+	}
+
+	// TODO: Add Process functions for all skills.
+	void ProcessGuitarLearning() {
+
 		if (LearningGuitar) {
 
 			// Tweak these numbers, you should not have very high modifiers per month
 			//	
-			float chanceToIncreaseModifier = (1 - (1 / (Age - startedGuitar [startedGuitar.Count - 1] + 0.01f))) * 0.1f;
+			float chanceToAddModifier = (1 - (1 / (Age - startedGuitar [startedGuitar.Count - 1] + 0.01f))) * Constants.BASE_SKILL_CHANCE_TO_ADD_MODIFIER_MOD;
 
-			Debug.Log (string.Format("chanceToIncreaseModifier: {0}", chanceToIncreaseModifier));
+			// Debug.Log (string.Format("chanceToIncreaseModifier: {0}", chanceToAddModifier));
 
-			if (Random.value < chanceToIncreaseModifier) {
+			if (Random.value < chanceToAddModifier) {
 
 				float ageModifier = Age - startedGuitar[startedGuitar.Count - 1];
-				float ageModified = ageModifier * 0.003f;
+				float ageModified = ageModifier * Constants.BASE_SKILL_AGE_MODIFIER_MOD;
 
-				Debug.Log (string.Format("ageModifier * 0.5f: {0}", ageModified));
+				// Debug.Log (string.Format("ageModifier: {0}", ageModified));
 
 				guitarModifier.Add(Random.Range(0.1f, ageModified));
 
@@ -112,13 +131,85 @@ public class Player : Life {
 				Guitar += Constants.BASE_SKILL_INCREASE_PER_MONTH;
 			}
 
+			guitarModifier.ForEach (x => Guitar += x);
+		}
+
+  	}
+
+	void ProcessVaccines() {
+
+		// Check to see if a Vaccination has expired, if so, remove it from the Vaccine list.
+		List<VaccinationDetails> vaccinesToRemove = new List<VaccinationDetails>();
+		foreach (VaccinationDetails vd in Vaccines) {
+
+			if (Age > (vd.Age + vd.MaxProtectionTime)) {
+
+				vaccinesToRemove.Add(vd);
+
+			}
+
+		}
+		vaccinesToRemove.ForEach (x => Vaccines.Remove (x));
+
+		// Check for new vaccines needed.
+		// Iterate through all known vaccine routines
+		foreach (KeyValuePair<string, VaccineListDetails[]> vaccine in VaccineList.Vaccines) {
+
+			// Iterate through all diseases in these routines
+			foreach (VaccineListDetails vld in vaccine.Value) {
+
+				// If our current Age is more or equal to the age at which you get the vaccine, then you will have a chance
+				//	to get the vaccine.
+				if (Age >= vld.Age) {
+
+					bool hasVaccination = false;
+
+					// Iterate through current vaccines, if a duplicate if found then no need to add it.
+					foreach (VaccinationDetails vd in Vaccines) {
+
+						if (vld.Disease == vd.Disease) {
+
+							hasVaccination = true;
+							break;
+
+						}
+
+					}
+
+					if (!hasVaccination) {
+
+						// TODO: Add chances to NOT get the vaccine.
+						Vaccines.Add (new VaccinationDetails (vld.Disease, vld.MaxProtectionTime, Age));
+
+					}
+
+				}
+
+				// Check to see if there is any vaccines we already have.
+				//	If the Vaccines list is empty, nothing in here will run.
+//				foreach (VaccinationDetails vd in Vaccines) {
+//
+//
+//					// 
+//					if (vld.Disease == vd.Disease && Age >= vld.Age) {
+//
+//						Vaccines.Add (new VaccinationDetails (vd.Disease, vd.MaxProtectionTime, Age));
+//
+//					}
+//
+//
+//
+//				}
+
+			}
 
 		}
 
-		guitarModifier.ForEach (x => Guitar += x);
+	}
 
-		// This needs to go at the end of the aging processes, with the above stuff happening.
-		base.ProcessAging ();
+	protected override void ProcessDiseases () {
+
+		base.ProcessDiseases ();
 
 	}
 
