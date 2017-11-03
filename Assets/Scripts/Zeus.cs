@@ -24,6 +24,10 @@ public class Zeus : MonoBehaviour {
 	public Spouse Spouse;
 	public Parent Mother, Father;
 
+	// This is for all the choices the user can pick, all choices need to be added to this array and removed once the
+	//	user has picked.
+	// DialogueBox[] queuedDialogueBoxes;
+
 	public void CreateNewLife() {
 
 		if (Mother != null) {
@@ -54,6 +58,13 @@ public class Zeus : MonoBehaviour {
 		Father = gameObject.AddComponent<Parent> ();
 		Father.ParentType = ParentType.FATHER;
 		Father.Create ();
+
+		// TODO: Try and remember the word instead of lifetime.
+		Mother.Vaccines.Add (new Vaccination ("Lifetime? Immunity", "All Vaccines", -1, 5000));
+		Father.Vaccines = Mother.Vaccines;
+
+		// For testing purposes.
+		Mother.Intellect = Father.Intellect = 100f;
 
 		Player = gameObject.AddComponent<Player> ();
 		Player.Create ();
@@ -97,7 +108,7 @@ public class Zeus : MonoBehaviour {
 
 	}
 
-	public void GiveVaccination(VaccinationDetails[] vaccinations) {
+	public void GiveVaccination(Vaccination[] vaccinations) {
 
 		Player.Vaccines.AddRange (vaccinations);
 
@@ -109,16 +120,9 @@ public class Zeus : MonoBehaviour {
 
 	}
 
-	public static NationalityDetails SetNationality() {
+	public static Nationality SetNationality() {
 
-		// Picking a random dictionary keypair by putting the Keys into a list, getting a random value from there
-		//		and putting the return value into the original dictionary.
-		List<string> keyList = new List<string> (Nationality.Nationalities.Keys);
-
-		string code = keyList[Random.Range(0, keyList.Count)];
-		NationalityDetails random = Nationality.Nationalities [code];
-
-		return random;
+		return Nationalities.List[Random.Range(0, Nationalities.List.Count)];;
 
 	}
 		

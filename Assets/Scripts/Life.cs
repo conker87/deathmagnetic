@@ -14,7 +14,7 @@ public class Life : MonoBehaviour {
 	[SerializeField]
 	Sexuality sexuality;
 	[SerializeField]
-	NationalityDetails nationality;
+	Nationality nationality;
 	[SerializeField]
 	bool isDead;
 
@@ -26,7 +26,14 @@ public class Life : MonoBehaviour {
 	public int AgeInYears			{	get { return ageInYears;		}	set { ageInYears = value; 		} 	}
 	public bool IsDead				{	get { return isDead;			}	set { isDead = value; 		} 	}
 
-	public NationalityDetails Nationality	{	get { return nationality; }	set { nationality = value;	} 	}
+	public Nationality Nationality	{	get { return nationality; }	set { nationality = value;	} 	}
+
+	[SerializeField]
+	List<Disease> diseases = new List<Disease>();
+	public List<Disease> Diseases 		{	get { return diseases; 	}	set { diseases = value; 	}	}
+	[SerializeField]
+	List<Vaccination> vaccines = new List<Vaccination>();
+	public List<Vaccination> Vaccines 		{	get { return vaccines; 	}	set { vaccines = value; 	}	}
 
 	// Basic Stats
 	[Range(0, 100)][SerializeField]
