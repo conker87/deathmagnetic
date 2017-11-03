@@ -30,10 +30,10 @@ public class Life : MonoBehaviour {
 
 	[SerializeField]
 	List<Disease> diseases = new List<Disease>();
-	public List<Disease> Diseases 		{	get { return diseases; 	}	set { diseases = value; 	}	}
+	public List<Disease> CurrentDiseases 			{	get { return diseases; 	}	set { diseases = value; 	}	}
 	[SerializeField]
 	List<Vaccination> vaccines = new List<Vaccination>();
-	public List<Vaccination> Vaccines 		{	get { return vaccines; 	}	set { vaccines = value; 	}	}
+	public List<Vaccination> CurrentVaccines 		{	get { return vaccines; 	}	set { vaccines = value; 	}	}
 
 	// Basic Stats
 	[Range(0, 100)][SerializeField]
@@ -62,9 +62,20 @@ public class Life : MonoBehaviour {
 
 	public virtual void ProcessAging() {
 
-		if (!IsDead) {
+		// 75% chance per month to check to die.
+		if (Random.value > 0.25f) {
 
-			Age++;
+			float chanceToDie = 1 - (1 / Zeus.CalculateBaseChanceToDie(Age));
+
+			if (this.FirstName == "Player") {
+				Debug.Log (string.Format ("{0}: {1}%", this.FirstName, chanceToDie * 100));
+			}
+
+			if (Random.value < chanceToDie) {
+
+				Die ();
+
+			}
 
 		}
 
@@ -74,11 +85,31 @@ public class Life : MonoBehaviour {
 
 		}
 
+		if (!IsDead) {
+
+			Age++;
+
+		}
+
 	}
 
 	protected virtual void ProcessDiseases() {
 
+		foreach (Disease d in Diseases.List) {
 
+			if (d.AverageAgeToContract != -1) {
+
+				// if (Random.value > d.ChanceToContractPerMonth
+
+			}
+
+			if (d.MaximumAgeToContract != -1) {
+
+
+
+			}
+
+		}
 
 	}
 

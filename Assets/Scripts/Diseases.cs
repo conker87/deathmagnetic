@@ -10,9 +10,9 @@ public class Diseases : MonoBehaviour {
 		// TODO: Finish this list, check what nationality people are, find and complete currency names & symbols, exchange rates and general cost of living.
 
 		{ new Disease("Invisibility", "Inuisibilitas", "Patients suffer no discomfort. Indeed, many use the condition to play practical jokes on their families.",
-			new string[] { "Whole Body" }, 20, 1) },
+			new string[] { "Whole Body" }, 240, 1) },
 		{ new Disease("Invisibility Fatal", "Inuisibilitas Fatalus", "Patients suffers massive discomfort. They totes dead.",
-			new string[] { "Whole Body" }, 10, 0.01f, 0.5f ) },
+			new string[] { "Whole Body" }, 120, 0.01f, 0.5f ) },
 		
 	};
 
