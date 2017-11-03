@@ -136,7 +136,7 @@ public class Player : Life {
 
   	}
 
-	void ProcessVaccines() {
+	public void ProcessVaccines() {
 
 		// Check to see if a Vaccination has expired, if so, remove it from the Vaccine list.
 		List<VaccinationDetails> vaccinesToRemove = new List<VaccinationDetails>();
@@ -178,8 +178,9 @@ public class Player : Life {
 
 					if (!hasVaccination) {
 
-						// TODO: Add chances to NOT get the vaccine.
-						Vaccines.Add (new VaccinationDetails (vld.Disease, vld.MaxProtectionTime, Age));
+						float intellectVaxModifier = Mathf.Clamp (1 / ((Mother.Intellect + Father.Intellect) / 2), 0f, 1f);
+
+						Vaccines.Add (new VaccinationDetails (vld.Disease, vld.MaxProtectionTime, Age, !(Random.value > intellectVaxModifier)));
 
 					}
 

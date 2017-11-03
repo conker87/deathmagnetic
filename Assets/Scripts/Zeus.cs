@@ -103,6 +103,12 @@ public class Zeus : MonoBehaviour {
 
 	}
 
+	public void testVaccines() {
+
+		Player.ProcessVaccines();
+
+	}
+
 	public static NationalityDetails SetNationality() {
 
 		// Picking a random dictionary keypair by putting the Keys into a list, getting a random value from there

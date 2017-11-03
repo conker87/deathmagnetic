@@ -7,12 +7,14 @@ public class VaccinationDetails {
 	
 	public string Disease;
 	public int Age, MaxProtectionTime;
+	public bool AntiVax;
 
-	public VaccinationDetails(string disease, int maxProtectionTime, int age) {
+	public VaccinationDetails(string disease, int maxProtectionTime, int age, bool antiVax = false) {
 
 		Disease = disease;
 		Age = age;
 		MaxProtectionTime = maxProtectionTime;
+		AntiVax = antiVax;
 
 	}
 
