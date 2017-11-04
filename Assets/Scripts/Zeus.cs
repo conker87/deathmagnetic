@@ -24,8 +24,6 @@ public class Zeus : MonoBehaviour {
 	public Spouse Spouse;
 	public Parent Mother, Father;
 
-	public float fx = 1.0375f;
-
 	// This is for all the choices the user can pick, all choices need to be added to this array and removed once the
 	//	user has picked.
 	// DialogueBox[] queuedDialogueBoxes;
@@ -125,59 +123,48 @@ public class Zeus : MonoBehaviour {
 
 	}
 
-	public static float CalculateBaseChanceToDie(int age) {
+	public static float CalculateBaseChanceToRandomlyDie(int age) {
 
-		float coeffient = 1f;
+		float coeffient = 1.00001f;
 
-		if (age == Constants.LIFE_ABSOLUTE_MAX_AGE_IN_MONTHS * 12) {
-
-			coeffient = 0.001f;
-
-		}
-
-		// TODO: These need tweaking as a 1% chance to die every 75% is pretty bad.
-		if (age < 124*12) {
-
-			coeffient = 1.0000759375f;
-		}
-		if (age < 100*12) {
-
-			coeffient = 1.000050625f;
-		}
-		if (age < 80*12) {
-
-			coeffient = 1.00003375f;
-		}
-		if (age < 60*12) {
-
-			coeffient = 1.0000225f;
-		}
-		if (age < 40*12) {
-
-			coeffient = 1.000015f;
-		}
-		if (age < 20*12) {
+		// TODO: These possibly still need tweaking, play-testing is needed.
+		if (age >= 0) {
 
 			coeffient = 1.00001f;
 		}
+		if (age >= (20*12)) {
 
-		return Mathf.Pow (coeffient, age);
+			coeffient = 1.000011f;
+		}
+		if (age >= (40*12)) {
+
+			coeffient = 1.000012f;
+		}
+		if (age >= (60*12)) {
+
+			coeffient = 1.00002f;
+		}
+		if (age >= (80*12)) {
+
+			coeffient = 1.00025f;
+		}
+		if (age >= (100*12)) {
+
+			coeffient = 1.0005f;
+		}
+		if (age >= Constants.LIFE_ABSOLUTE_MAX_AGE_IN_MONTHS) {
+
+			coeffient = 2f;
+
+		}
+
+		return (Mathf.Pow (coeffient, age) - 1f) / 100f;
 
 	}
 
 	public static Nationality SetNationality() {
 
 		return Nationalities.List[Random.Range(0, Nationalities.List.Count)];;
-
-	}
-
-	public void _DEBUG_DoFx() {
-
-		for (int i = 0; i <= 125; i++) {
-
-			Debug.Log (string.Format ("{0} yo: {1}", i, Mathf.Pow(fx, i)));
-
-		}
 
 	}
 

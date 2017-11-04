@@ -26,6 +26,11 @@ public class Life : MonoBehaviour {
 	public int AgeInYears			{	get { return ageInYears;		}	set { ageInYears = value; 		} 	}
 	public bool IsDead				{	get { return isDead;			}	set { isDead = value; 		} 	}
 
+	int previousAge;
+
+	[SerializeField]
+	public List<float> deathChanceModifier = new List<float> ();
+
 	public Nationality Nationality	{	get { return nationality; }	set { nationality = value;	} 	}
 
 	[SerializeField]
@@ -44,7 +49,7 @@ public class Life : MonoBehaviour {
 	public float Fitness 	{	get { return fitness;		}	set { fitness = value; 		}	}
 	public float Intellect 	{	get { return intellect;		}	set { intellect = value; 	}	}
 
-	void Update() {
+	protected virtual void Update() {
 
 		AgeInYears = Age / 12;
 
@@ -63,18 +68,21 @@ public class Life : MonoBehaviour {
 	public virtual void ProcessAging() {
 
 		// 75% chance per month to check to die.
-		if (Random.value > 0.25f) {
+		if (Random.value <= Constants.LIFE_CHANCE_TO_CHECK_IF_MONTH_COULD_KILL_YOU / 100f) {
 
-			float chanceToDie = 1 - (1 / Zeus.CalculateBaseChanceToDie(Age));
+			float chanceToDie = Zeus.CalculateBaseChanceToRandomlyDie(Age);
+			float ran = Random.value;
 
-			if (this.FirstName == "Player") {
-				Debug.Log (string.Format ("{0}: {1}%", this.FirstName, chanceToDie * 100));
-			}
+			deathChanceModifier.ForEach (x => chanceToDie += (x / 100f));
 
-			if (Random.value < chanceToDie) {
+			if (ran < chanceToDie) {
 
 				Die ();
 
+			}
+
+			if (this.FirstName == "Player") {
+				Debug.Log (string.Format ("{0} (At Age: {3}/{4}: {1}% ({2}). Killed you? {5}", this.FirstName, chanceToDie * 100f, ran, Age, Age / 12, (ran < chanceToDie)));
 			}
 
 		}
@@ -99,7 +107,11 @@ public class Life : MonoBehaviour {
 
 			if (d.AverageAgeToContract != -1) {
 
-				// if (Random.value > d.ChanceToContractPerMonth
+				if (Random.value < (d.ChanceToContractPerMonth / 100)) {
+
+
+
+				}
 
 			}
 

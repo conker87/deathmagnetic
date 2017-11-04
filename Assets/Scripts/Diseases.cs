@@ -37,7 +37,7 @@ public class Disease {
 	/// <param name="affectedBodyParts">Affected body parts.</param>
 	/// <param name="averageAgeToContract">Average age to contract.</param>
 	/// <param name="averageLength">Average length.</param>
-	/// <param name="chanceToContractPerMonth">Chance to contract per month.</param>
+	/// <param name="chanceToContractPerMonth">Chance to contract per month, IN RAW PERCENTAGE OUT OF 100.</param>
 	/// <param name="increasedChanceToDie">Increased chance to die.</param>
 	/// <param name="canBeTreated">If set to <c>true</c> can be treated.</param>
 	/// <param name="canBeCured">If set to <c>true</c> can be cured.</param>
@@ -68,7 +68,7 @@ public class Disease {
 	/// <param name="description">Description.</param>
 	/// <param name="affectedBodyParts">Affected body parts.</param>
 	/// <param name="maximumAgeToContract">Maximum age to contract.</param>
-	/// <param name="chanceToContractPerMonth">Chance to contract per month.</param>
+	/// <param name="chanceToContractPerMonth">Chance to contract per month, IN RAW PERCENTAGE OUT OF 100.</param>
 	/// <param name="increasedChanceToDie">Increased chance to die.</param>
 	/// <param name="canBeTreated">If set to <c>true</c> can be treated.</param>
 	/// <param name="canBeCured">If set to <c>true</c> can be cured.</param>

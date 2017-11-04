@@ -14,7 +14,7 @@ public class Parent : Life {
 			// We first decide the sexuality of the first parent (which is always the mother, easier that way)
 			//	The chance to Heterosexual is 90%, with being Bi or Homosexual given both 5% chances.
 			//	I could look up actual populations of Bisexual and Homosexual people in the world to get an accurate chance, but I'm lazy.
-			Sexuality = (Random.value > (1f - Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER) ? Sexuality.HETEROSEXUAL :
+			Sexuality = (Random.value > (1f - (Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER / 100f)) ? Sexuality.HETEROSEXUAL :
 								((Random.value > 0.5f) ? Sexuality.BISEXUAL : Sexuality.HOMOSEXUAL));
 
 			// "Default"
@@ -42,7 +42,7 @@ public class Parent : Life {
 			if (Zeus.Current.Mother.Sexuality == Sexuality.HETEROSEXUAL) {
 
 				Gender = (Zeus.Current.Mother.Gender == Gender.MALE) ? Gender.FEMALE : Gender.MALE;
-				Sexuality = (Random.value > (1f - Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER)) ? Sexuality.HETEROSEXUAL : Sexuality.BISEXUAL;
+				Sexuality = (Random.value < Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER) ? Sexuality.HETEROSEXUAL : Sexuality.BISEXUAL;
 
 			}
 
@@ -90,10 +90,10 @@ public class Parent : Life {
 		#endregion
 
 		#region Basic Stats
-		Happiness = Random.Range(0, 100);
-		Appearance = Random.Range(0, 100);
-		Fitness = Random.Range(0, 100);
-		Intellect = Random.Range(0, 100);
+		Happiness = Random.value * 100f;
+		Appearance = Random.value * 100f;
+		Fitness = Random.value * 100f;
+		Intellect = Random.value * 100f;
 		#endregion
 
 		if (ParentType == ParentType.MOTHER) {
@@ -104,7 +104,7 @@ public class Parent : Life {
 
 		if (ParentType == ParentType.FATHER) {
 
-			Nationality = (Random.value > 1f - Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER) ? Zeus.Current.Mother.Nationality : Zeus.SetNationality ();
+			Nationality = (Random.value < Constants.PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER) ? Zeus.Current.Mother.Nationality : Zeus.SetNationality ();
 
 		}
 
@@ -112,7 +112,7 @@ public class Parent : Life {
 
 	public override void ProcessAging () {
 
-		base.ProcessAging ();
+		// base.ProcessAging ();
 
 	}
 

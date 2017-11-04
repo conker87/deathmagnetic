@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Constants {
 
-	public static float PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER = 0.90f;
+	public static float PARENT_CHANCE_TO_BE_PARENT_TYPE_GENDER = 90f;
+
+	// Death
+	public static int LIFE_CHANCE_TO_CHECK_IF_MONTH_COULD_KILL_YOU = 100;
+
 
 	// Age
 	public static int PARENT_MIN_AGE_IN_MONTHS = 204, PARENTS_MAX_AGE_IN_MONTHS = 960;
@@ -15,7 +19,7 @@ public class Constants {
 	// Skill
 	public static float SCHOOL_BACKGROUND_INTELLECT_GAIN_PER_MONTH = 0.5f; // [PH]
 	public static float BASE_SKILL_INCREASE_PER_MONTH = 0.1f;
-	public static float BASE_SKILL_CHANCE_TO_ADD_MODIFIER_MOD = 0.1f;
+	public static float BASE_SKILL_CHANCE_TO_ADD_MODIFIER_MOD = 1f;
 	public static float BASE_SKILL_AGE_MODIFIER_MOD = 0.003f;
 
 	// Health

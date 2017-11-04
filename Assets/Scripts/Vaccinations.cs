@@ -9,7 +9,7 @@ public class Vaccinations {
 
 
 		{ new Vaccination[] {
-				new Vaccination("Rotavirus", "Rotavirus Infection", 2, 3)
+				new Vaccination("Rotavirus", "Rotavirus Infection", 5000, 3)
 			}
 		},
 		{ new Vaccination[] {
