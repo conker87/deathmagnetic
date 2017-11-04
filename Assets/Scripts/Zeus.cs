@@ -51,15 +51,17 @@ public class Zeus : MonoBehaviour {
 
 		}
 
+		Destroy (Spouse);
+
 		Mother = gameObject.AddComponent<Parent> ();
 		Mother.ParentType = ParentType.MOTHER;
-		Mother.Create ();
 		Mother.FirstName = "Mother";
+		Mother.Create ();
 
 		Father = gameObject.AddComponent<Parent> ();
 		Father.ParentType = ParentType.FATHER;
-		Father.Create ();
 		Father.FirstName = "Father";
+		Father.Create ();
 
 		// TODO: Try and remember the word instead of lifetime.
 		Mother.CurrentVaccines.Add (new Vaccination ("Lifetime? Immunity", "All Vaccines", -1, 5000));
@@ -69,8 +71,8 @@ public class Zeus : MonoBehaviour {
 		Mother.Intellect = Father.Intellect = 100f;
 
 		Player = gameObject.AddComponent<Player> ();
-		Player.Create ();
 		Player.FirstName = "Player";
+		Player.Create ();
 
 	}
 

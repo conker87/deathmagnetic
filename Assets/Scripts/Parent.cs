@@ -110,13 +110,6 @@ public class Parent : Life {
 
 	}
 
-	public override void ProcessAging () {
-
-		// base.ProcessAging ();
-
-	}
-
-
 }
 
 public enum ParentType { MOTHER, FATHER }

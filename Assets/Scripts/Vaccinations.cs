@@ -7,7 +7,6 @@ public class Vaccinations {
 	// public static Dictionary<string, Vaccination[]> Dictionary = new Dictionary<string, Vaccination[]> {
 	public static List<Vaccination[]> List = new List<Vaccination[]> {
 
-
 		{ new Vaccination[] {
 				new Vaccination("Rotavirus", "Rotavirus Infection", 5000, 3)
 			}
@@ -61,7 +60,7 @@ public class Vaccinations {
 			}
 		},
 		{ new Vaccination[] {
-				new Vaccination("Seasonal Flu", "Seasonal Influenza", 8, 168)
+				new Vaccination("Seasonal Flu", "Seasonal Influenza", 8, 168, 3f)
 			}
 		},
 	};
@@ -73,41 +72,48 @@ public class Vaccination {
 
 	public string Vaccine;
 	public string Disease;
-	public int Age;
 	public int MaxProtectionTime;
+	public int AgeImmunised;
+	public float ReducedChanceToContractDisease;
 	public bool Expired;
 	public bool Missed;
 
-	public Vaccination(string vaccine, string disease, int maxProtectionTime, int age, bool expired, bool missed) {
+	/// <summary>
+	/// Initializes a new instance of the <see cref="Vaccination"/> class.
+	/// </summary>
+	/// <param name="vaccine">Vaccine.</param>
+	/// <param name="disease">Disease.</param>
+	/// <param name="maxProtectionTime">Max protection time.</param>
+	/// <param name="age">Age.</param>
+	/// <param name="reducedChanceToContractDisease">Reduced chance to contract disease, the chance is divided by this number.</param>
+	/// <param name="expired">If set to <c>true</c> expired.</param>
+	/// <param name="missed">If set to <c>true</c> missed.</param>
+	public Vaccination(string vaccine, string disease, int maxProtectionTime, int age, float reducedChanceToContractDisease = -1f, bool expired = false, bool missed = false) {
 
 		Vaccine = vaccine;
 		Disease = disease;
-		Age = age;
 		MaxProtectionTime = maxProtectionTime;
+		AgeImmunised = age;
+		ReducedChanceToContractDisease = reducedChanceToContractDisease;
 		Expired = expired;
 		Missed = missed;
 
 	}
 
-	public Vaccination(string vaccine, string disease, int maxProtectionTime, int age, bool expired) {
+	public Vaccination(Vaccination vaccination) {
 
-		Vaccine = vaccine;
-		Disease = disease;
-		Age = age;
-		MaxProtectionTime = maxProtectionTime;
-		Expired = expired;
-		Missed = false;
+		Vaccine = vaccination.Vaccine;
+		Disease = vaccination.Disease;
+		MaxProtectionTime = vaccination.MaxProtectionTime;
+		AgeImmunised = vaccination.AgeImmunised;
+		ReducedChanceToContractDisease = vaccination.ReducedChanceToContractDisease;
+		Expired = vaccination.Expired;
+		Missed = vaccination.Missed;
 
 	}
 
-	public Vaccination(string vaccine, string disease, int maxProtectionTime, int age) {
+	public Vaccination() {
 
-		Vaccine = vaccine;
-		Disease = disease;
-		Age = age;
-		MaxProtectionTime = maxProtectionTime;
-		Expired = false;
-		Missed = false;
 
 	}
 

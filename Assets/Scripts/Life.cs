@@ -73,7 +73,7 @@ public class Life : MonoBehaviour {
 			float chanceToDie = Zeus.CalculateBaseChanceToRandomlyDie(Age);
 			float ran = Random.value;
 
-			deathChanceModifier.ForEach (x => chanceToDie += (x / 100f));
+			deathChanceModifier.ForEach (x => chanceToDie += ((x / 100f) / 100f));
 
 			if (ran < chanceToDie) {
 
@@ -82,7 +82,7 @@ public class Life : MonoBehaviour {
 			}
 
 			if (this.FirstName == "Player") {
-				Debug.Log (string.Format ("{0} (At Age: {3}/{4}: {1}% ({2}). Killed you? {5}", this.FirstName, chanceToDie * 100f, ran, Age, Age / 12, (ran < chanceToDie)));
+				// Debug.Log (string.Format ("{0} (At Age: {3}/{4}: {1}% ({2}). Killed you? {5}", this.FirstName, (chanceToDie * 100f).ToString("N7"), ran, Age, Age / 12, (ran < chanceToDie)));
 			}
 
 		}
@@ -98,30 +98,129 @@ public class Life : MonoBehaviour {
 			Age++;
 
 		}
+			
+		ProcessDiseases ();
 
 	}
 
-	protected virtual void ProcessDiseases() {
+	protected void ProcessDiseases(bool justBeenBorn = false) {
 
+		// TODO: We need to add anything that happens from here into the main Label.
+		// Check for diseases and add them if it is randomly chosen.
 		foreach (Disease d in Diseases.List) {
 
-			if (d.AverageAgeToContract != -1) {
+			if (CheckIfLifeHasDisease(d.DiseaseName)) {
 
-				if (Random.value < (d.ChanceToContractPerMonth / 100)) {
+				Debug.Log (string.Format ("{0} already has {1} and so cannot get it again.", this, d.DiseaseName));
+				continue;
 
+			}
 
+			if ((justBeenBorn && d.DiseaseType == DiseaseType.BORN) || d.DiseaseType == DiseaseType.CONTRACT) {
+
+				float contractionChance = d.ChanceToContract / 100f, reducedChanceToContract = 1f;
+
+				if (CheckIfLifeHasVaccination(d.DiseaseName, out reducedChanceToContract)) {
+
+					contractionChance /= reducedChanceToContract;
+
+				}
+
+				float chanceToContractRand = Random.value;
+
+				// Debug.Log (string.Format("chanceToContractRand: {0}, contractionChance: {1}", chanceToContractRand, contractionChance / 100f));
+
+				if (chanceToContractRand < (contractionChance)) {
+
+					Disease currentDiseaseToAdd = new Disease (d);
+
+					currentDiseaseToAdd.AgeContracted = this.Age;
+
+					Debug.Log (string.Format("{0}: {1}", this.FirstName, this.Age));
+
+					CurrentDiseases.Add (currentDiseaseToAdd);
+					deathChanceModifier.Add (d.IncreasedChanceToDie);
+					Debug.Log(string.Format("{0} has contracted {1}!", this.FirstName, d.DiseaseName));
 
 				}
 
 			}
 
-			if (d.MaximumAgeToContract != -1) {
+		}
 
+		List<Disease> currentDiseasesToRemove = new List<Disease> ();
+		currentDiseasesToRemove.Clear ();
 
+		// Check for current diseases and remove if applicable.
+		foreach (Disease d in CurrentDiseases) {
+
+			if (!d.CanBeCured) {
+
+				continue;
+
+			}
+
+			int averageLengthOfDisease = d.AverageLength;
+			int ageOfDisease = this.Age - d.AgeContracted;
+			float coefficent = 1.5f;
+
+			// TODO: More play-testing is needed to determine if this is the correct formula.
+			float chanceToBeCuredThisMonth = ((float) ageOfDisease / (float) averageLengthOfDisease) / coefficent;
+			chanceToBeCuredThisMonth *= Random.Range (1f - (1f / averageLengthOfDisease), 1.01f);
+
+			//Debug.Log (string.Format("chanceToBeCuredThisMonth: {0}. Formula: ({2} / {1}) / {3} ", chanceToBeCuredThisMonth, averageLengthOfDisease,
+				// ageOfDisease, coefficent));
+
+			// f(x) = (ageOfDisease / averageLengthOfDisease) * CONSTANT;
+
+			float chanceToRemoveDiseaseRan = Random.value;
+
+			if (chanceToRemoveDiseaseRan < chanceToBeCuredThisMonth) {
+
+				currentDiseasesToRemove.Add (d);
+				deathChanceModifier.Remove (d.IncreasedChanceToDie);
+				Debug.Log(string.Format("{0} has been cured of {1}!", this.FirstName, d.DiseaseName));
 
 			}
 
 		}
+
+		currentDiseasesToRemove.ForEach (x => CurrentDiseases.Remove (x));
+
+	}
+
+	public bool CheckIfLifeHasDisease(string diseaseName) {
+
+		foreach (Disease d in CurrentDiseases) {
+
+			if (diseaseName == d.DiseaseName) {
+
+				return true;
+
+			}
+
+		}
+
+		return false;
+
+	}
+
+	public bool CheckIfLifeHasVaccination(string diseaseName, out float reducedChanceToContract) {
+
+		reducedChanceToContract = 0f;
+
+		foreach (Vaccination v in CurrentVaccines) {
+
+			if (diseaseName == v.Disease) {
+
+				reducedChanceToContract = v.ReducedChanceToContractDisease;
+				return true;
+
+			}
+
+		}
+
+		return false;
 
 	}
 

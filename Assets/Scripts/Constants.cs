@@ -17,7 +17,7 @@ public class Constants {
 	public static int LIFE_ABSOLUTE_MAX_AGE_IN_MONTHS = 1500;
 
 	// Skill
-	public static float SCHOOL_BACKGROUND_INTELLECT_GAIN_PER_MONTH = 0.5f; // [PH]
+	public static float SCHOOL_BACKGROUND_INTELLECT_GAIN_PER_MONTH = 0.3f; // [PH]
 	public static float BASE_SKILL_INCREASE_PER_MONTH = 0.1f;
 	public static float BASE_SKILL_CHANCE_TO_ADD_MODIFIER_MOD = 1f;
 	public static float BASE_SKILL_AGE_MODIFIER_MOD = 0.003f;
