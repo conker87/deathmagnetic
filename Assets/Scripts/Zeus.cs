@@ -100,14 +100,50 @@ public class Zeus : MonoBehaviour {
 
 	public void LearningGuitarToggle() {
 
+		if (Player == null) {
+
+			return;
+
+		}
+
+		if (Player.Age < Constants.LIFE_MIN_AGE_TO_GUITAR) {
+
+			return;
+
+		}
+
 		if (!Player.LearningGuitar) {
 
 			Player.LearningGuitar = true;
-			Player.startedGuitar.Add (Player.Age);
+			if (Player.startedGuitar.Contains (Player.Age)) {
+				Player.startedGuitar.Add (Player.Age);
+			}
 
 		} else {
 
 			Player.LearningGuitar = false;
+
+		}
+
+	}
+
+	public void IsStudyingToggle() {
+
+		if (Player.Age < Constants.LIFE_MIN_AGE_TO_STUDY) {
+
+			return;
+
+		}
+
+		Player.IsStudying = !Player.IsStudying;
+
+		if (Player.IsStudying) {
+
+			Player.intellectModifier.Add (Constants.SKILL_STUDYING_MODIFIER_MOD);
+
+		} else {
+
+			Player.intellectModifier.Remove (Constants.SKILL_STUDYING_MODIFIER_MOD);
 
 		}
 

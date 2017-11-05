@@ -52,6 +52,10 @@ public class Life : MonoBehaviour {
 	protected virtual void Update() {
 
 		AgeInYears = Age / 12;
+		Happiness	= Mathf.Clamp (Happiness, 0f, 100f);
+		Appearance	= Mathf.Clamp (Appearance, 0f, 100f);
+		Fitness		= Mathf.Clamp (Fitness, 0f, 100f);
+		Intellect	= Mathf.Clamp (Intellect, 0f, 100f);
 
 	}
 

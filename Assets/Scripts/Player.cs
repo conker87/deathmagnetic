@@ -69,10 +69,10 @@ public class Player : Life {
 		IsAdopted = (Zeus.Current.Mother.Gender == Zeus.Current.Father.Gender);
 
 		#region Basic Stats
-		Happiness = 100;
-		Appearance = 50;
-		Fitness = 5;
-		Intellect = 5;
+		Happiness = 100f;
+		Appearance = 50f;
+		Fitness = 5f;
+		Intellect = 5f;
 		#endregion
 
 		#region Nationalitiy
@@ -208,6 +208,8 @@ public class Player : Life {
 
 			guitarModifier.ForEach (x => Guitar += x);
 		}
+
+		Guitar = Mathf.Clamp (Guitar, 0f, 1000f);
 
   	}
 

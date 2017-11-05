@@ -14,9 +14,9 @@ public class Diseases : MonoBehaviour {
 		{ new Disease(DiseaseType.BORN, "Invisibility Fatal", "Inuisibilitas Fatalus", "Patients suffers massive discomfort. They totes dead.",
 			new string[] { "Whole Body" }, 5000) },
 		{ new Disease(DiseaseType.BORN, "Testititus", "Testius Sharpus", "Testing.",
-			new string[] { "Whole Body" }, 5, 100f) },
+			new string[] { "Whole Body" }, 5, 0.5f) },
 		{ new Disease(DiseaseType.CONTRACT, "Testititus Contract", "Testius Sharpus", "Testing.",
-			new string[] { "Whole Body" }, 5, 25f) }
+			new string[] { "Whole Body" }, 5, 0.5f) }
 		
 	};
 
