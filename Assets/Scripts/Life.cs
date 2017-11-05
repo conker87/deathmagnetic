@@ -6,7 +6,7 @@ public class Life : MonoBehaviour {
 
 	// Vitals
 	[SerializeField]
-	string firstname, surname;
+	string firstname, lastname;
 	[SerializeField]
 	int age, ageInYears;
 	[SerializeField]
@@ -19,7 +19,7 @@ public class Life : MonoBehaviour {
 	bool isDead;
 
 	public string FirstName			{	get { return firstname; 		}	set { firstname = value; 		} 	}
-	public string Surname			{	get { return surname; 			}	set { surname = value; 			} 	}
+	public string LastName			{	get { return lastname; 			}	set { lastname = value; 			} 	}
 	public Gender Gender			{	get { return gender; 			}	set { gender = value; 			}	}
 	public Sexuality Sexuality		{	get { return sexuality;			}	set { sexuality = value; 		} 	}
 	public int Age					{	get { return age;				}	set { age = value; 				} 	} // THIS IS IN MONTHS!
@@ -115,7 +115,7 @@ public class Life : MonoBehaviour {
 
 			if (CheckIfLifeHasDisease(d.DiseaseName)) {
 
-				Debug.Log (string.Format ("{0} already has {1} and so cannot get it again.", this, d.DiseaseName));
+				// Debug.Log (string.Format ("{0} already has {1} and so cannot get it again.", this, d.DiseaseName));
 				continue;
 
 			}
@@ -140,11 +140,17 @@ public class Life : MonoBehaviour {
 
 					currentDiseaseToAdd.AgeContracted = this.Age;
 
-					Debug.Log (string.Format("{0}: {1}", this.FirstName, this.Age));
-
 					CurrentDiseases.Add (currentDiseaseToAdd);
 					deathChanceModifier.Add (d.IncreasedChanceToDie);
-					Debug.Log(string.Format("{0} has contracted {1}!", this.FirstName, d.DiseaseName));
+
+					if (this is Player) {
+					
+						string output = string.Format ("You have contracted {0}!", d.DiseaseName);
+
+						Zeus.QueueToOutput (output);
+						// Debug.Log (output);
+
+					}
 
 				}
 
@@ -172,18 +178,21 @@ public class Life : MonoBehaviour {
 			float chanceToBeCuredThisMonth = ((float) ageOfDisease / (float) averageLengthOfDisease) / coefficent;
 			chanceToBeCuredThisMonth *= Random.Range (1f - (1f / averageLengthOfDisease), 1.01f);
 
-			//Debug.Log (string.Format("chanceToBeCuredThisMonth: {0}. Formula: ({2} / {1}) / {3} ", chanceToBeCuredThisMonth, averageLengthOfDisease,
-				// ageOfDisease, coefficent));
-
-			// f(x) = (ageOfDisease / averageLengthOfDisease) * CONSTANT;
-
 			float chanceToRemoveDiseaseRan = Random.value;
 
 			if (chanceToRemoveDiseaseRan < chanceToBeCuredThisMonth) {
 
 				currentDiseasesToRemove.Add (d);
 				deathChanceModifier.Remove (d.IncreasedChanceToDie);
-				Debug.Log(string.Format("{0} has been cured of {1}!", this.FirstName, d.DiseaseName));
+
+				if (this is Player) {
+
+					string output = string.Format("You no longer have {0}!", d.DiseaseName);
+
+					Zeus.QueueToOutput (output);
+					// Debug.Log (output);
+
+				}
 
 			}
 
