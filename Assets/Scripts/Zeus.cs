@@ -38,9 +38,6 @@ public class Zeus : MonoBehaviour {
 	public RectTransform OutputScrollRect;
 	static RectTransform outputScrollRect;
 
-	public Scrollbar VerticalScrollBar;
-	static Scrollbar verticalScrollBar;
-
 	public ScrollRect ScrollViewRect;
 	static ScrollRect scrollViewRect;
 
@@ -97,52 +94,67 @@ public class Zeus : MonoBehaviour {
 		Player.LastName = "LastName";
 		Player.Create ();
 
+		// Canvas.ForceUpdateCanvases();
+		scrollViewRect.verticalNormalizedPosition = 0f;
+		Canvas.ForceUpdateCanvases();
+
 		PostToOutput ();
+
+	}
+
+	public void _DEBUG_KillPlayer() {
+		
+		if (Player == null) {
+
+			return;
+
+		}
+
+		Player.IsDead = true;
+
+	}
+
+	public void _DEBUG_AgeUntilDead() {
+
+		if (Player == null) {
+
+			CreateNewLife ();
+
+		}
+
+		while (!Player.IsDead) {
+
+			AgeMonth (1);
+
+		}
 
 	}
 
 	public void AgeMonth(int monthsToAge) {
 
-		if (Player == null || Mother == null || Father == null) {
+		if (Player == null || Mother == null || Father == null || Player.IsDead) {
 
 			return;
 
 		}
 
 		int i = 0;
-		float timeBefore = 0f, timeAfter = 0f;
-
 
 		while (monthsToAge > i) {
 
-			float timeProcessBefore = 0f, timeProcessAfter = 0f;
-
-			timeProcessBefore = Time.time;
 			Player.ProcessAging ();
-			timeProcessAfter = Time.time;
-			Debug.Log (string.Format("Player.ProcessAging () took: {0} ms.", timeProcessAfter - timeProcessBefore));
 
 			if (Spouse != null) Spouse.ProcessAging ();
 
-			timeProcessBefore = Time.time;
 			Mother.ProcessAging ();
-			timeProcessAfter = Time.time;
-			Debug.Log (string.Format("Mother.ProcessAging () took: {0} ms.", timeProcessAfter - timeProcessBefore));
 
-			timeProcessBefore = Time.time;
 			Father.ProcessAging ();
-			timeProcessAfter = Time.time;
-			Debug.Log (string.Format("Father.ProcessAging () took: {0} ms.", timeProcessAfter - timeProcessBefore));
 
 			i++;
 
 		}
 
 		PostToOutput ();
-
-		timeAfter = Time.time;
-
-		Debug.Log (string.Format("This iteration took: {0} ms.", timeAfter - timeBefore));
 
 	}
 
@@ -255,19 +267,7 @@ public class Zeus : MonoBehaviour {
 
 	}
 
-	public void _DEBUG_TestOutputStatic() {
-
-		int iterations = 250;
-
-		for (int i = 0; i < iterations; i++) {
-
-			QueueToOutput (string.Format("New Line Test: {0}", i), 1);
-
-		}
-
-	}
-
-	public static void QueueToOutput(string text = "", int newLines = 1) {
+	public static void QueueToOutput(string text = "", bool forceNewLineAfter = false, int newLines = 1) {
 
 		if (output == null || outputScrollRect == null) {
 
@@ -298,12 +298,18 @@ public class Zeus : MonoBehaviour {
 
 	static void PostToOutput() {
 
+		if (ToUpdateOutput.Count == 0) {
+
+			return;
+
+		}
+
 		ToUpdateOutput.ForEach (x => output.text += x);
 		ToUpdateOutput.Clear ();
 
-		Canvas.ForceUpdateCanvases();
-		scrollViewRect.verticalNormalizedPosition = 0f;
-		Canvas.ForceUpdateCanvases();
+		// Canvas.ForceUpdateCanvases();
+		// scrollViewRect.verticalNormalizedPosition = 0f;
+		// Canvas.ForceUpdateCanvases();
 
 	}
 
@@ -369,13 +375,7 @@ public class Zeus : MonoBehaviour {
 
 		output = Output;
 		outputScrollRect = OutputScrollRect;
-		verticalScrollBar = VerticalScrollBar;
 		scrollViewRect = ScrollViewRect;
 
-	}
-
-	// Update is called once per frame
-	void Update () {
-		// toUpdateOutput = ToUpdateOutput;
 	}
 }

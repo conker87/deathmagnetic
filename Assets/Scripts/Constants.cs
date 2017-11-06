@@ -28,6 +28,6 @@ public class Constants {
 	// Health
 	public static int VACCINATION_MAX_MONTH_LENGTH_FLU_PROTECTION = 10;
 
-	public static int TEXT_CHARACTER_LIMIT = 7500;
+	public static int TEXT_CHARACTER_LIMIT = 5000;
 
 }

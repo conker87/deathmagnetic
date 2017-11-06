@@ -26,8 +26,6 @@ public class Life : MonoBehaviour {
 	public int AgeInYears			{	get { return ageInYears;		}	set { ageInYears = value; 		} 	}
 	public bool IsDead				{	get { return isDead;			}	set { isDead = value; 		} 	}
 
-	int previousAge;
-
 	[SerializeField]
 	public List<float> deathChanceModifier = new List<float> ();
 
@@ -100,10 +98,9 @@ public class Life : MonoBehaviour {
 		if (!IsDead) {
 
 			Age++;
+			ProcessDiseases ((Age == 0));
 
 		}
-			
-		ProcessDiseases ();
 
 	}
 
@@ -120,7 +117,7 @@ public class Life : MonoBehaviour {
 
 			}
 
-			if ((justBeenBorn && d.DiseaseType == DiseaseType.BORN) || d.DiseaseType == DiseaseType.CONTRACT) {
+			if ((justBeenBorn && d.DiseaseType == DiseaseType.BORN) || (Age > 0 && d.DiseaseType == DiseaseType.CONTRACT)) {
 
 				float contractionChance = d.ChanceToContract / 100f, reducedChanceToContract = 1f;
 
@@ -144,11 +141,36 @@ public class Life : MonoBehaviour {
 					deathChanceModifier.Add (d.IncreasedChanceToDie);
 
 					if (this is Player) {
-					
-						string output = string.Format ("You have contracted {0}!", d.DiseaseName);
+
+						string output = "";
+
+						output = (d.DiseaseType == DiseaseType.BORN)
+							? string.Format ("You were born with <b>{0}</b>.", d.DiseaseName)
+							: string.Format ("You have contracted <b>{0}</b>!", d.DiseaseName);
 
 						Zeus.QueueToOutput (output);
-						// Debug.Log (output);
+						Zeus.QueueToOutput ();
+
+						string affectBodyParts = "";
+
+						foreach (string s in d.AffectedBodyParts) {
+
+							affectBodyParts += s + ", ";
+
+						}
+
+						affectBodyParts = affectBodyParts.Remove (affectBodyParts.Length - 2);
+
+						Zeus.Current.Player.MajorEvents.Add (new MajorEvent (
+							string.Format ("Contracted {0}", d.DiseaseName),
+							Age,
+							string.Format ("You contracted {0}.\n\n<b>{0}</b>\n<i>{1}</i>\nAffected Body Parts: {3}.\n\n{2}",
+								d.DiseaseName,
+								d.LatinName,
+								d.Description,
+								affectBodyParts),
+							Zeus.Current.Player.IncrementLastIndexMajorEvent()
+						));
 
 					}
 
@@ -187,10 +209,18 @@ public class Life : MonoBehaviour {
 
 				if (this is Player) {
 
-					string output = string.Format("You no longer have {0}!", d.DiseaseName);
+					Zeus.QueueToOutput (
+						string.Format("You no longer have {0}!", d.DiseaseName),
+						true);
+					Zeus.QueueToOutput ();
 
-					Zeus.QueueToOutput (output);
-					// Debug.Log (output);
+					Zeus.Current.Player.MajorEvents.Add (new MajorEvent (
+						string.Format ("{0} Cured", d.DiseaseName),
+						Age,
+						string.Format ("Your {0} was cured.",
+							d.DiseaseName),
+						Zeus.Current.Player.IncrementLastIndexMajorEvent()
+					));
 
 				}
 

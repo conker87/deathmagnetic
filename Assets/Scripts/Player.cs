@@ -16,6 +16,8 @@ public class Player : Life {
 
 	public bool IsAdopted			{	get { return isAdopted; 		}	set { isAdopted = value; 		} 	}
 
+	public List<MajorEvent> MajorEvents = new List<MajorEvent>();
+
 	// Schooling
 	[SerializeField]
 	bool atSchool, atUniversity;
@@ -87,16 +89,26 @@ public class Player : Life {
 		Zeus.ResetOutput ();
 
 		Zeus.QueueToOutput ("————————————————————");
-		Zeus.QueueToOutput (string.Format("You are {0} {1}.", FirstName, LastName));
-		Zeus.QueueToOutput (string.Format("You are born {0}.", Zeus.ToTitleCase(Gender.ToString().ToLower())));
-		Zeus.QueueToOutput (string.Format("You were born in {0}, your nationality is {1}.", Nationality.CountryName, Nationality.Demonym));
+
+		Zeus.QueueToOutput (string.Format("You are <b>{0} {1}</b>.", FirstName, LastName));
+		Zeus.QueueToOutput (string.Format("You are born <b>{0}</b>.", Zeus.ToTitleCase(Gender.ToString().ToLower())));
+		Zeus.QueueToOutput (string.Format("You were born in <b>{0}</b>, your nationality is <b>{1}</b>.", Nationality.CountryName, Nationality.Demonym));
+
+		Zeus.QueueToOutput (string.Format("Your Mother is: <b>{0} {1}</b>, " + ((Mother.Gender == Gender.FEMALE) ? "her" : "his") + " nationality is <b>{2}</b>.", Mother.FirstName, Mother.LastName, Mother.Nationality.Demonym));
+		Zeus.QueueToOutput (string.Format("Your Father is: <b>{0} {1}</b>, " + ((Father.Gender == Gender.FEMALE) ? "her" : "his") + " nationality is <b>{2}</b>.", Father.FirstName, Father.LastName, Father.Nationality.Demonym));
+		if (IsAdopted) Zeus.QueueToOutput (string.Format("<b>You are adopted.</b>"));
+	
+		Zeus.QueueToOutput ("————————————————————");
 		Zeus.QueueToOutput ();
 
-		Zeus.QueueToOutput (string.Format("Your Mother is: {0} {1}, " + ((Mother.Gender == Gender.FEMALE) ? "her" : "his") + " nationality is {2}.", Mother.FirstName, Mother.LastName, Mother.Nationality.Demonym));
-		Zeus.QueueToOutput (string.Format("Your Father is: {0} {1}, " + ((Father.Gender == Gender.FEMALE) ? "her" : "his") + " nationality is {2}.", Father.FirstName, Father.LastName, Father.Nationality.Demonym));
-		if (IsAdopted) Zeus.QueueToOutput (string.Format("You are adopted."));
-
-		Zeus.QueueToOutput ("————————————————————");
+		MajorEvents.Add (new MajorEvent ("Born", 0,
+			string.Format("You were born. You are a <b>{0}</b>. Your nationality is <b>{1}</b>. Your Mother is <b>{2}</b> and your Father is <b>{3}</b>.",
+				FirstName + " " + LastName,
+				Nationality.Demonym,
+				Mother.FirstName + " " + Mother.LastName,
+				Father.FirstName + " " + Father.LastName),
+				Zeus.Current.Player.IncrementLastIndexMajorEvent())
+		);
 
 		ProcessAging ();
 
@@ -108,12 +120,18 @@ public class Player : Life {
 
 		if (IsDead) {
 
+			Zeus.QueueToOutput ("You have died.");
+
+			MajorEvents.Add (new MajorEvent ("Died", Age,
+				string.Format("You Died."),
+				Zeus.Current.Player.IncrementLastIndexMajorEvent())
+			);
+
+			// TODO: Disable elements.
+
 			return;
 
 		}
-
-		Zeus.QueueToOutput ();
-		Zeus.QueueToOutput (OutputAge());
 
 		ProcessVaccines ();
 
@@ -123,6 +141,12 @@ public class Player : Life {
 
 			AtSchool = true;
 			Zeus.QueueToOutput ("You started school.");
+			Zeus.QueueToOutput ();
+
+			MajorEvents.Add (new MajorEvent ("School", Age,
+				string.Format("You started school."),
+				Zeus.Current.Player.IncrementLastIndexMajorEvent())
+			);
 
 		}
 
@@ -138,7 +162,9 @@ public class Player : Life {
 			intellectModifier.ForEach (x => Intellect += x);
 
 		}
-
+			
+		Zeus.QueueToOutput (OutputAge ());
+		Zeus.QueueToOutput ();
 
 	}
 
@@ -163,16 +189,15 @@ public class Player : Life {
 
 		}
 
-		bool wasVaccination = false;
-		string _vaccine = "";
-		List<string> _vaccines = new List<string>();
-
 		// Check for new vaccines needed.
 		// Iterate through all known vaccine routines
 		foreach (Vaccination[] vaccine in Vaccinations.List) {
 
 			int i = 0;
 			bool routineMissed = false;
+			bool wasVaccination = false;
+			string _vaccine = "";
+			List<string> _vaccines = new List<string>();
 
 			// Iterate through all diseases in these routines
 			foreach (Vaccination vld in vaccine) {
@@ -199,7 +224,7 @@ public class Player : Life {
 
 						wasVaccination = true;
 						_vaccine = currentVaccineToAdd.Vaccine;
-						_vaccines.Add(currentVaccineToAdd.Disease);
+						_vaccines.Add(string.Format(currentVaccineToAdd.Disease + ((vld.MaxProtectionTime == 5000) ? " forever" : " for {0} months"), vld.MaxProtectionTime));
 
 					}
 
@@ -207,18 +232,31 @@ public class Player : Life {
 
 			}
 
+
+			if (wasVaccination) {
+
+				string _vaccinesTemp = "";
+
+				_vaccines.ForEach (x => _vaccinesTemp += "• " + x + ".\n");
+				_vaccinesTemp = _vaccinesTemp.Remove (_vaccinesTemp.Length - 1);
+
+				Zeus.QueueToOutput (string.Format("You had the {0} vaccination, you are now protected from the following diseases:\n{1}", _vaccine, _vaccinesTemp));
+				Zeus.QueueToOutput ();
+
+				_vaccinesTemp = "";
+
+				_vaccines.ForEach (x => _vaccinesTemp += x + ", ");
+				_vaccinesTemp = _vaccinesTemp.Remove (_vaccinesTemp.Length - 2);
+				MajorEvents.Add (new MajorEvent ("Vaccinated", Age,
+					string.Format("You were vaccinationed. You got the {0} vaccine, which protects you against {1}.",
+						_vaccine,
+						_vaccinesTemp),
+					Zeus.Current.Player.IncrementLastIndexMajorEvent())
+				);
+
+			}
+
 			i++;
-
-		}
-
-		if (wasVaccination) {
-
-			string _vaccinesTemp = "";
-
-			_vaccines.ForEach (x => _vaccinesTemp += "• " + x + "\n");
-			_vaccinesTemp = _vaccinesTemp.Remove (_vaccinesTemp.Length - 1);
-
-			Zeus.QueueToOutput (string.Format("You had the {0} vaccination, you are now protected from the following diseases:\n{1}", _vaccine, _vaccinesTemp));
 
 		}
 
@@ -229,20 +267,19 @@ public class Player : Life {
 
 		if (LearningGuitar && startedGuitar.Count > 0) {
 
-			// Tweak these numbers, you should not have very high modifiers per month
-			//	
+			// TODO: Tweak these numbers, you should not have very high modifiers per month
 			float chanceToAddModifier = (1 / (Age - startedGuitar [startedGuitar.Count - 1] + 0.01f)) * Constants.BASE_SKILL_CHANCE_TO_ADD_MODIFIER_MOD;
 
 			// Debug.Log (string.Format("chanceToIncreaseModifier: {0}", chanceToAddModifier));
 
 			if (Random.value < chanceToAddModifier) {
 
-				float ageModifier = Age - startedGuitar[startedGuitar.Count - 1];
+				float ageModifier = Age - startedGuitar [startedGuitar.Count - 1];
 				float ageModified = ageModifier * Constants.BASE_SKILL_AGE_MODIFIER_MOD;
 
 				// Debug.Log (string.Format("ageModifier: {0}", ageModified));
 
-				guitarModifier.Add(Random.Range(0.1f, ageModified));
+				guitarModifier.Add (Random.Range (0.1f, ageModified));
 
 			}
 
@@ -252,10 +289,10 @@ public class Player : Life {
 			}
 
 			guitarModifier.ForEach (x => Guitar += x);
+
 		}
 
 		Guitar = Mathf.Clamp (Guitar, 0f, 1000f);
-
   	}
 
 	string OutputAge() {
@@ -263,7 +300,13 @@ public class Player : Life {
 		int months = Age % 12;
 		int ageInYearsOutput = (Age / 12);
 
-		return string.Format ("<b>You are {0} year(s) and {1} month(s) old.</b>", ageInYearsOutput, months);
+		return string.Format ("<u>You are {0} year(s) and {1} month(s) old.</u>", ageInYearsOutput, months);
+
+	}
+
+	public int IncrementLastIndexMajorEvent() {
+
+		return (MajorEvents != null && MajorEvents.Count > 0) ? MajorEvents.Count : 0;
 
 	}
 
