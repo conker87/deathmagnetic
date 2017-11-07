@@ -94,39 +94,14 @@ public class Zeus : MonoBehaviour {
 		Player.LastName = "LastName";
 		Player.Create ();
 
+		// Testing the Housing information, I require a multiplier of 1.
+		Player.Nationality = new Nationality ("ENG", "England", "English", "British Pound", "£", "", 1f);
+
 		// Canvas.ForceUpdateCanvases();
 		scrollViewRect.verticalNormalizedPosition = 0f;
 		Canvas.ForceUpdateCanvases();
 
 		PostToOutput ();
-
-	}
-
-	public void _DEBUG_KillPlayer() {
-		
-		if (Player == null) {
-
-			return;
-
-		}
-
-		Player.IsDead = true;
-
-	}
-
-	public void _DEBUG_AgeUntilDead() {
-
-		if (Player == null) {
-
-			CreateNewLife ();
-
-		}
-
-		while (!Player.IsDead) {
-
-			AgeMonth (1);
-
-		}
 
 	}
 
@@ -218,7 +193,41 @@ public class Zeus : MonoBehaviour {
 
 	public void _DEBUG_testVaccines() {
 
-		Player.ProcessVaccines();
+		Player.ProcessVaccines ();
+
+	}
+
+	public void _DEBUG_KillPlayer() {
+
+		if (Player == null) {
+
+			return;
+
+		}
+
+		Player.IsDead = true;
+
+	}
+
+	public void _DEBUG_AgeUntilDead() {
+
+		if (Player == null) {
+
+			CreateNewLife ();
+
+		}
+
+		while (!Player.IsDead) {
+
+			AgeMonth (1);
+
+		}
+
+	}
+
+	public void _DEBUG_GenerateSomeHouses(int houses) {
+
+		Houses.GenerateSomeHouses (20);
 
 	}
 
