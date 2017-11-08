@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class Houses : MonoBehaviour {
 
-	public static List<House> GeneratedHouses = new List<House> ();
-
-	void Start() {
-
-
-
-	}
+	public static List<House> List = new List<House> ();
 
 	// TODO: Decide if I want to generate new houses every Month, generate some houses and disgard some others, or save them.
 
@@ -29,7 +23,7 @@ public class Houses : MonoBehaviour {
 
 		}
 
-		GeneratedHouses.Clear ();
+		List.Clear ();
 
 		float average = 1f;
 
@@ -67,7 +61,10 @@ public class Houses : MonoBehaviour {
 					((baseCostRand > locationScoreFloat / 1.25) ? Random.Range(3000, 6500) :
 						((baseCostRand > locationScoreFloat / 1.75) ? Random.Range(7500, 10500) : Random.Range(10500, 15000))));
 
-			Debug.Log (string.Format("LS: {7}, {3}B, {4}BA: {0}{1}{2} ({0}{5}{2})/({0}{6}{2}). baseCostRand: {8}",
+			bool garden = (Random.value < locationScoreFloat);
+			bool offStreetParking = (Random.value < locationScoreFloat / 1.25f);
+
+			Debug.Log (string.Format("LS: {7}, {3}B, {4}BA G{9}/O{10} - {0}{5}{2} ({0}{6}{2}). baseCostRand: {8}",
 				Zeus.Current.Player.Nationality.CurrencyStringPrefix,
 				string.Format(("{0:n}"), baseCost),
 				Zeus.Current.Player.Nationality.CurrencyStringSuffix,
@@ -76,9 +73,11 @@ public class Houses : MonoBehaviour {
 				baseCost * Zeus.Current.Player.Nationality.CurrencyMultiplier,
 				baseCost * Zeus.Current.Player.Nationality.CurrencyMultiplier * Zeus.Current.Player.Nationality.CostOfLivingMultiplier,
 				Mathf.RoundToInt(locationScoreFloat * 100),
-				baseCostRand));
+				baseCostRand,
+				(garden) ? "Y" : "N",
+				(offStreetParking) ? "Y" : "N"));
 
-			GeneratedHouses.Add (new House (bedrooms, bathrooms, Mathf.RoundToInt(locationScoreFloat * 100), baseCost));
+			List.Add (new House (bedrooms, bathrooms, garden, offStreetParking, Mathf.RoundToInt(locationScoreFloat * 100), baseCost, Random.Range(1f, 9f), -1f));
 
 			average += baseCost;
 

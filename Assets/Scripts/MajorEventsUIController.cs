@@ -7,15 +7,17 @@ using TMPro;
 public class MajorEventsUIController : MonoBehaviour {
 
 	public RectTransform parent;
-	public Button MajorEventsPrefab;
+	public Button ButtonPrefab;
+
+	public GameObject MajorEventDetails_Panel;
 
 	List<MajorEvent> thisPageEvents = new List<MajorEvent>();
 
-	int currentPage, supposedMaxPage, maxButtonsPerPage = 5;
+	int currentPage, supposedMaxPage, maxButtonsPerPage = 6;
 
 	void OnEnable () {
 
-		if (Zeus.Current == null) {
+		if (Zeus.Current == null || Zeus.Current.Player == null) {
 
 			return;
 
@@ -59,6 +61,12 @@ public class MajorEventsUIController : MonoBehaviour {
 	}
 
 	void PopulateList() {
+		
+		if (Zeus.Current == null || Zeus.Current.Player == null) {
+
+			return;
+
+		}
 
 		thisPageEvents.Clear ();
 
@@ -78,11 +86,18 @@ public class MajorEventsUIController : MonoBehaviour {
 
 	void PopulateButtons() {
 
+		if (Zeus.Current == null || Zeus.Current.Player == null) {
+
+			return;
+
+		}
+
 		foreach (MajorEvent me in thisPageEvents) {
 
-			Button current = Instantiate (MajorEventsPrefab, parent.transform) as Button;
+			Button current = Instantiate (ButtonPrefab, parent.transform) as Button;
 
 			current.GetComponentInChildren<Text> ().text = me.EventName;
+			current.onClick.AddListener(delegate { ButtonOnClick (me); });
 
 		}
 
@@ -116,6 +131,23 @@ public class MajorEventsUIController : MonoBehaviour {
 		DestroyAllButtons ();
 		PopulateList ();
 		PopulateButtons ();	
+
+	}
+
+	void ButtonOnClick(MajorEvent me) {
+
+		Debug.Log (string.Format ("Would open the MajorEventsDetails_Panel and show: {0}", me.EventName));
+
+		if (MajorEventDetails_Panel == null) {
+
+			return;
+
+		}
+
+		Text text = MajorEventDetails_Panel.GetComponent<Text> ();
+
+		text.text = "blah blah";
+
 
 	}
 

@@ -25,6 +25,12 @@ public class Player : Life {
 	public bool AtSchool			{	get { return atSchool; 			}	set { atSchool = value; 		} 	}
 	public bool AtUniversity		{	get { return atUniversity; 		}	set { atUniversity = value; 	} 	}
 
+	[SerializeField]
+	float money;
+	public float Money				{	get { return money; 			}	set { money = value; 			} 	}
+
+	public List<House> OwnedHouses = new List<House>();
+
 	// Current Acitivies
 	[SerializeField]
 	public List<float> intellectModifier = new List<float> (), guitarModifier = new List<float> ();
@@ -83,6 +89,10 @@ public class Player : Life {
 		Nationality = (Random.value > 0.5f) ? Mother.Nationality : Father.Nationality;
 		#endregion
 
+		Money = 100 * Nationality.CurrencyMultiplier;
+
+		Money = 1000000000000;
+
 		// Check 
 		// ProcessDiseases (true);
 
@@ -109,6 +119,8 @@ public class Player : Life {
 				Father.FirstName + " " + Father.LastName),
 				Zeus.Current.Player.IncrementLastIndexMajorEvent())
 		);
+
+		Houses.GenerateSomeHouses (21);
 
 		ProcessAging ();
 

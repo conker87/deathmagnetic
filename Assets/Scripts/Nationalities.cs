@@ -14,7 +14,8 @@ public class Nationalities {
 		{ new Nationality("ALB", "Albania",			"Albanian", 	"Albanian Lek", "Lek", "", 152.65f) },
 		{ new Nationality("DZA", "Algeria",			"Algerian", 	"Algerian Dinar", "", "", 153.68f) },
 		{ new Nationality("ASM", "American Samoa",	"Samoan", 		"US Dollar", "$", "", 1.33f) },
-		{ new Nationality("INR", "India",			"Indian", 		"Indian Rupee", "₹", "", 85.82f) }
+		{ new Nationality("INR", "India",			"Indian", 		"Indian Rupee", "₹", "", 85.82f) },
+		{ new Nationality("JPN", "Japan",			"Japanese", 	"Japanese Yen", "¥", "", 149.888f) }
 
 	};
 

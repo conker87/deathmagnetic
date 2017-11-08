@@ -47,26 +47,14 @@ public class Zeus : MonoBehaviour {
 
 	public void CreateNewLife() {
 
-		if (Mother != null) {
+		Destroy (Mother);
+		Mother = null;
 
-			Destroy (Mother);
-			Mother = null;
+		Destroy (Father);
+		Father = null;
 
-		}
-
-		if (Father != null) {
-
-			Destroy (Father);
-			Father = null;
-
-		}
-
-		if (Player != null) {
-
-			Destroy (Player);
-			Player = null;
-
-		}
+		Destroy (Player);
+		Player = null;
 
 		Destroy (Spouse);
 
@@ -95,7 +83,7 @@ public class Zeus : MonoBehaviour {
 		Player.Create ();
 
 		// Testing the Housing information, I require a multiplier of 1.
-		Player.Nationality = new Nationality ("ENG", "England", "English", "British Pound", "£", "", 1f);
+		// Player.Nationality = new Nationality ("ENG", "England", "English", "British Pound", "£", "", 1f);
 
 		// Canvas.ForceUpdateCanvases();
 		scrollViewRect.verticalNormalizedPosition = 0f;
